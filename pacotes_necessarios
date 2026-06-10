@@ -1,0 +1,31 @@
+# Essêncial (é bom manter esses pacotes e não alterar)
+@networkmanager-submodules
+@multimedia
+ffmpegthumbnailer
+xdg-utils
+compsize
+langpacks-core-pt_BR
+flatpak
+git
+tree
+langpacks-fonts-pt
+langpacks-pt_BR
+tuned
+tuned-ppd
+zram-generator
+spice-vdagent
+podman
+fpaste
+auditctl
+unzip
+usbutils
+sysfsutils
+
+# Pacotes não essênciais (pode ser alterado a gosto)
+@virtualization
+distrobox
+nano
+bash-color-prompt
+btop
+fastfetch
+adw-gtk3-theme

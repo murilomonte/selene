@@ -1,0 +1,83 @@
+#!/bin/bash
+set -e
+
+flatpak remote-delete fedora
+sleep 2
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+sleep 2
+flatpak install -y flathub \
+io.bassi.Amberol \
+org.gnome.baobab \
+io.github.kolunmi.Bazaar \
+com.rafaelmardojai.Blanket \
+studio.planetpeanut.Bobby \
+com.usebottles.bottles \
+org.gnome.Boxes \
+org.gnome.Calculator \
+org.gnome.Calendar \
+com.calibre_ebook.calibre \
+org.chromium.Chromium \
+io.github.diegopvlk.Cine \
+io.github.anil_e.Codd \
+com.github.finefindus.eyedropper \
+org.gnome.design.Contrast \
+io.github.shonebinu.Defuse \
+io.github.pol_rivero.github-desktop-plus \
+org.gnome.SimpleScan \
+com.discordapp.Discord \
+com.ranfdev.DistroShelf \
+org.kde.drawy \
+com.github.wwmm.easyeffects \
+ca.desrt.dconf-editor \
+org.gnome.TextEditor \
+org.fedoraproject.MediaWriter \
+org.mozilla.firefox \
+org.flathub.flatpak-external-data-checker \
+com.github.tchx84.Flatseal \
+org.gnome.font-viewer \
+de.haeckerfelix.Fragments \
+com.github.neithern.g4music \
+it.mijorus.gearlever \
+org.gnome.FileRoller \
+com.google.Chrome \
+be.alexandervanhee.gradia \
+org.gnome.SoundRecorder \
+fr.handbrake.ghb \
+com.heroicgameslauncher.hgl \
+com.hypixel.HytaleLauncher \
+rest.insomnia.Insomnia \
+org.kde.kdenlive \
+rocks.koreader.KOReader \
+org.gnome.Connections \
+org.localsend.localsend_app \
+net.lutris.Lutris \
+org.gnome.Weather \
+org.gnome.Mines \
+io.mrarm.mcpelauncher \
+io.missioncenter.MissionCenter \
+com.jeffser.Nocturne \
+com.obsproject.Studio \
+org.onlyoffice.desktopeditors \
+org.nickvision.tubeconverter \
+io.podman_desktop.PodmanDesktop \
+com.github.marhkb.Pods \
+org.gimp.GIMP \
+com.vysp3r.ProtonPlus \
+org.gnome.Quadrapassel \
+org.gnome.Logs \
+org.gnome.clocks \
+org.libretro.RetroArch \
+dev.diegovsky.Riff \
+io.github.vikdevelop.SaveDesktop \
+com.spotify.Client \
+com.valvesoftware.Steam \
+org.gnome.NautilusPreviewer \
+io.gitlab.adhami3310.Converter \
+org.telegram.desktop \
+io.gitlab.theevilskeleton.Upscaler \
+io.github.mpobaschnig.Vaults \
+org.gnome.Papers \
+org.gnome.Loupe \
+org.videolan.VLC \
+org.gnome.Epiphany
+

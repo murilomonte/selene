@@ -1,0 +1,72 @@
+FROM quay.io/fedora/fedora-bootc:44 AS final
+LABEL ostree.bootable="true"
+LABEL containers.bootc="1"
+COPY locale.conf post-install.sh pacotes_desktop pacotes_necessarios post-install.service vconsole.conf zram-generator.conf ./
+RUN mkdir -vp /var/roothome /data /var/home && \
+    dnf5 -y upgrade --refresh && \
+    dnf5 -y install kernel-modules-extra --refresh && \
+    printf 'omit_dracutmodules+=" nfs "\nomit_drivers+=" nfs nfsv3 nfsv4 nfs_acl nfs_common sunrpc rxrpc rpcrdma auth_rpcgss rpcsec_gss_krb5 "\n' | tee /etc/dracut.conf.d/no-nfs.conf && \
+    kver="$(rpm -q kernel-core --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
+    dracut -f /usr/lib/modules/${kver}/initramfs.img ${kver} && \
+    dnf5 -y install wget && \
+    mv -v zram-generator.conf /etc/systemd/ && \
+    rm -rvf /opt && mkdir -vp /var/opt && ln -vs /var/opt /opt && \
+    mkdir -vp /var/usrlocal && mv -v /usr/local/* /var/usrlocal/ && \
+    rm -rvf /usr/local && ln -vs /var/usrlocal /usr/local && \
+    mv -v vconsole.conf /etc/vconsole.conf && \
+    mv -v locale.conf /etc/locale.conf && \
+    mv -v post-install.sh /usr/bin/post-install.sh && \
+    mv -v post-install.service /usr/lib/systemd/system/post-install.service && \
+    chmod +x /usr/bin/post-install.sh && \
+    systemctl enable post-install.service && \
+    dnf5 clean all && \
+    rm -rfv /var/cache/* \
+    /var/lib/* \
+    /var/log/* \
+    /var/tmp/*
+
+# Instalação do niri + DankMaterialShell
+RUN dnf5 -y install dnf-plugins-core && \
+    dnf5 -y copr enable avengemedia/dms && \
+    dnf5 -y install niri dms && \
+    mkdir -vp /usr/lib/systemd/user/niri.service.wants && \
+    ln -sv ../dms.service /usr/lib/systemd/user/niri.service.wants/dms.service && \
+    dms greeter enable && \
+    dnf5 clean all && \
+    rm -rfv /var/cache/* \
+    /var/lib/* \
+    /var/log/* \
+    /var/tmp/*
+
+# instalação dos pacotes necessários para o ambiente de desktop e a base
+RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
+    grep -v '^#' pacotes_desktop | tr '\n' ' ' | xargs dnf5 install -y && \
+    systemctl mask systemd-remount-fs.service && \
+    systemctl enable libvirtd.service && \
+    systemctl enable spice-vdagentd.service && \
+    rm -fv pacotes_necessarios pacotes_desktop && \
+    dnf5 clean all && \
+    rm -rfv /var/cache/* \
+    /var/lib/* \
+    /var/log/* \
+    /var/tmp/* \
+    /var/usrlocal/share/applications/mimeinfo.cache \
+    /var/roothome/.*
+
+# Verificação da imagem com o bootc container lint
+RUN bootc container lint
+
+# Otimização da imagem final usando o chunkah aproveitando layers compartilhados
+FROM quay.io/coreos/chunkah AS chunkah
+ARG CHUNKAH_CONFIG_STR
+RUN --mount=from=final,src=/,target=/chunkah,ro \
+    --mount=type=bind,target=/run/src,rw \
+    chunkah build --max-layers 128 \
+    --label ostree.commit- \
+    --label ostree.final-diffid- \
+    --output oci:/run/src/out
+
+FROM oci:out
+LABEL ostree.bootable="true"
+LABEL containers.bootc="1"
+
