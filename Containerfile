@@ -26,7 +26,7 @@ RUN mkdir -vp /var/roothome /data /var/home && \
     /var/tmp/*
 
 # Instalação do niri + DankMaterialShell
-RUN dnf5 -y install dnf-plugins-core && \
+RUN dnf5 -y install 'dnf5-command(copr)' && \
     dnf5 -y copr enable avengemedia/dms && \
     dnf5 -y install niri dms && \
     mkdir -vp /usr/lib/systemd/user/niri.service.wants && \
