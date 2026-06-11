@@ -28,10 +28,9 @@ RUN mkdir -vp /var/roothome /data /var/home && \
 # Instalação do niri + DankMaterialShell
 RUN dnf5 -y install 'dnf5-command(copr)' && \
     dnf5 -y copr enable avengemedia/dms && \
-    dnf5 -y install niri dms && \
+    dnf5 -y install niri dms dms-greeter && \
     mkdir -vp /usr/lib/systemd/user/niri.service.wants && \
     ln -sv ../dms.service /usr/lib/systemd/user/niri.service.wants/dms.service && \
-    dms greeter enable && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \
