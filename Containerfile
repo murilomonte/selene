@@ -40,6 +40,7 @@ RUN dnf5 -y install 'dnf5-command(copr)' && \
 # instalação dos pacotes necessários para o ambiente de desktop e a base
 RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     grep -v '^#' pacotes_desktop | tr '\n' ' ' | xargs dnf5 install -y && \
+    rm -fv /usr/lib/sysusers.d/brltty.conf && \
     systemctl mask systemd-remount-fs.service && \
     systemctl enable libvirtd.service && \
     systemctl enable spice-vdagentd.service && \
