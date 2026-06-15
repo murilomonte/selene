@@ -44,6 +44,7 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     systemctl enable libvirtd.service && \
     systemctl enable spice-vdagentd.service && \
     systemctl enable greetd.service && \
+    systemd-sysusers && \
     rm -fv pacotes_necessarios pacotes_desktop && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
@@ -51,8 +52,7 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     /var/log/* \
     /var/tmp/* \
     /var/usrlocal/share/applications/mimeinfo.cache \
-    /var/roothome/.* && \
-    systemd-sysusers
+    /var/roothome/.*
 
 # Verificação da imagem com o bootc container lint
 RUN bootc container lint
