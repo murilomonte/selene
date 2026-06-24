@@ -1,1 +1,3 @@
-Teste de imagem atomica utilizando niri e dms.
+# Selene
+
+Imagem bootc feita com base na do Ferlinuxdebian

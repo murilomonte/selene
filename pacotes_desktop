@@ -1,8 +1,11 @@
-# Pacotes para o desktop niri + DankMaterialShell
+# Aqui são os pacote referentes ao Desktop no caso Gnome, mas pode ser alterado para outro facilmente colocando-os aqui
+evince-thumbnailer
+glycin-thumbnailer
+gnome-epub-thumbnailer
 adw-gtk3-theme
-xwayland-satellite
-xdg-desktop-portal-gnome
-xdg-desktop-portal-gtk
+libnma
 ibus-typing-booster
 ibus-gtk4
+gnome-shell-extension-appindicator
 nautilus
+ptyxis
