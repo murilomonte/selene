@@ -24,7 +24,6 @@ RUN mkdir -vp /var/roothome /data /var/home && \
     mv -v post-install.service /usr/lib/systemd/system/post-install.service && \
     chmod +x /usr/bin/post-install.sh && \
     systemctl enable post-install.service && \
-    rm -rvf kmod-nvidia-*.rpm nvidia-kmod-common*.rpm nvidia-driver-cuda*.rpm && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \

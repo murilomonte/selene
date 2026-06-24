@@ -32,7 +32,6 @@ nvtop
 xclip
 ps_mem
 copyq
-libva-nvidia-driver
 ripgrep
 bash-color-prompt
 fira-code-fonts
@@ -40,15 +39,3 @@ btop
 fastfetch
 adw-gtk3-theme
 gum
-
-# Drivers da Nvidia (se você não tem nvidia, pode remover a versão é sempre a 580 negativo17)
-nvidia-gpu-firmware
-nvidia-modprobe
-ocl-icd
-opencl-filesystem
-libnvidia-cfg
-libnvidia-gpucomp
-libnvidia-ml
-nvidia-driver-cuda-libs
-nvidia-driver-libs
-nvidia-persistenced
