@@ -50,7 +50,7 @@ RUN dnf5 install dnf5-plugins -y && \
     dnf5 clean all
 
 # Instalação do niri com o noctalia
-RUN dnf5 install niri dms -y && \
+RUN dnf5 install dms niri --exclude=waybar,alacritty -y && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \

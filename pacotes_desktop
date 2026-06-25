@@ -12,7 +12,6 @@ ibus-gtk4
 nautilus
 ptyxis
 
-
 # Para o dms
 cliphist
 i2c-tools
@@ -20,3 +19,5 @@ matugen
 wl-clipboard
 dms-greeter
 qt6-qtmultimedia
+power-profiles-daemon
+cups-pk-helper
