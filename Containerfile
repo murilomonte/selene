@@ -39,12 +39,18 @@ RUN mkdir -vp /var/roothome /data /var/home && \
 #     dnf5 clean all
 
 # Adiciona o COPR do Hyprland (necessario para o noctalia v5)
+# RUN dnf5 install dnf5-plugins -y && \
+#     dnf5 copr enable lionheartp/Hyprland -y && \
+#     dnf5 clean all
+
+# Adiciona o COPR do Dank
 RUN dnf5 install dnf5-plugins -y && \
-    dnf5 copr enable lionheartp/Hyprland -y && \
+    dnf5 copr enable avengemedia/danklinux -y && \
+    dnf5 copr enable avengemedia/dms -y && \
     dnf5 clean all
 
 # Instalação do niri com o noctalia
-RUN dnf5 install niri noctalia-git -y && \
+RUN dnf5 install niri dms -y && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \
@@ -61,6 +67,7 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     systemctl enable spice-vdagentd.service && \
     mkdir -vp /etc/greetd && mv -v greetd.toml /etc/greetd/config.toml && \
     systemctl enable greetd.service && \
+    systemctl --global enable dms && \
     rm -fv pacotes_necessarios pacotes_desktop && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \

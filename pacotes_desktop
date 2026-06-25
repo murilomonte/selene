@@ -5,10 +5,18 @@ gnome-epub-thumbnailer
 adw-gtk3-theme
 libnma
 greetd
-noctalia-greeter
 dbus
 polkit
 ibus-typing-booster
 ibus-gtk4
 nautilus
 ptyxis
+
+
+# Para o dms
+cliphist
+i2c-tools
+matugen
+wl-clipboard
+dms-greeter
+qt6-multimedia
