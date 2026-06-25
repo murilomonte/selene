@@ -1,8 +1,7 @@
-# Primeiro estágio: Construção do ambiente com os drivers NVIDIA
-# Imagem dividida em dois estágios para otimizar o tamanho final da imagem
+
 FROM quay.io/fedora/fedora-bootc:44 AS builder
 
-# Imagem final: Configuração do ambiente de desktop e instalação dos drivers NVIDIA
+# Imagem final: Configuração do ambiente de desktop
 FROM quay.io/fedora/fedora-bootc:44 AS final
 LABEL ostree.bootable="true"
 LABEL containers.bootc="1"
@@ -34,22 +33,13 @@ RUN mkdir -vp /var/roothome /data /var/home && \
     /var/log/* \
     /var/tmp/*
 
-# Adiciona o repositório Terra
-# RUN dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release -y && \
-#     dnf5 clean all
-
-# Adiciona o COPR do Hyprland (necessario para o noctalia v5)
-# RUN dnf5 install dnf5-plugins -y && \
-#     dnf5 copr enable lionheartp/Hyprland -y && \
-#     dnf5 clean all
-
-# Adiciona o COPR do Dank
+# Adiciona o COPR do dms
 RUN dnf5 install dnf5-plugins -y && \
     dnf5 copr enable avengemedia/danklinux -y && \
     dnf5 copr enable avengemedia/dms -y && \
     dnf5 clean all
 
-# Instalação do niri com o noctalia
+# Instalação do niri com dms
 RUN dnf5 install dms niri --exclude=waybar,alacritty -y && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
@@ -77,6 +67,13 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     /var/tmp/* \
     /var/usrlocal/share/applications/mimeinfo.cache \
     /var/roothome/.*
+
+# Instalação do Tailscale
+RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
+    dnf5 install tailscale -y && \
+    systemctl enable tailscaled.service && \
+    dnf5 clean all && \
+    rm -rfv /var/cache/*
 
 RUN grpconv && pwconv && systemd-sysusers
 

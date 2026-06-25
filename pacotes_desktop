@@ -11,6 +11,8 @@ ibus-typing-booster
 ibus-gtk4
 nautilus
 ptyxis
+gnome-disk-utility
+baobab
 
 # Para o dms
 cliphist
