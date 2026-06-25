@@ -24,17 +24,7 @@ sysfsutils
 # Pacotes não essênciais (pode ser alterado a gosto)
 @virtualization
 distrobox
-featherpad
-btrfs-assistant
-micro
-nvtop
-xclip
 ps_mem
-copyq
 ripgrep
-bash-color-prompt
-fira-code-fonts
-btop
 fastfetch
 adw-gtk3-theme
-gum

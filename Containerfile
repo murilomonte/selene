@@ -66,6 +66,9 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     /var/usrlocal/share/applications/mimeinfo.cache \
     /var/roothome/.*
 
+# Pré-criação de usuários de sistema para evitar falha do systemd-sysusers no boot
+RUN systemd-sysusers
+
 # Verificação da imagem com o bootc container lint
 RUN bootc container lint
 
