@@ -30,8 +30,12 @@ RUN mkdir -vp /var/roothome /data /var/home && \
     /var/log/* \
     /var/tmp/*
 
-# Instalação do gnome-shell minimalista
-RUN dnf5 install gnome-shell --setopt=install_weak_deps=False -y && \
+# Adiciona o repositório Terra
+RUN dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release -y && \
+    dnf5 clean all
+
+# Instalação do niri com o noctalia
+RUN dnf5 install niri noctalia -y && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \
