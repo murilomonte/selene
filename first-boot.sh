@@ -9,5 +9,3 @@ fi
 # Cria o diretório de cache do dms greeter
 mkdir -p /var/cache/dms-greeter
 
-mkdir -p /var/lib/selene
-touch /var/lib/selene/.firstboot-done

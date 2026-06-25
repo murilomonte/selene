@@ -2,7 +2,6 @@
 Description=Selene First Boot Setup
 After=local-fs.target
 Before=greetd.service
-ConditionPathExists=!/var/lib/selene/.firstboot-done
 
 [Service]
 Type=oneshot
