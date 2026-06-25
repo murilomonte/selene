@@ -1,11 +1,12 @@
 #!/bin/bash
 set -e
 
-flatpak remote-delete fedora 2>/dev/null || true
-sleep 2
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sleep 2
-flatpak install -y flathub \
+
+flatpak -y install --reinstall flathub $(flatpak list --app-runtime=org.fedoraproject.Platform --columns=application | tail -n +1)
+
+flatpak install -y --reinstall flathub \
 be.alexandervanhee.gradia \
 ca.desrt.dconf-editor \
 com.github.finefindus.eyedropper \
@@ -28,5 +29,7 @@ io.github.kolunmi.Bazaar \
 io.github.diegopvlk.Cine \
 org.gnome.TextEditor \
 com.ranfdev.DistroShelf
+
+flatpak remote-delete --force fedora 2>/dev/null || true
 
 touch /var/lib/.post-install-done
