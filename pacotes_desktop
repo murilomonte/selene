@@ -4,6 +4,10 @@ glycin-thumbnailer
 gnome-epub-thumbnailer
 adw-gtk3-theme
 libnma
+greetd
+noctalia-greeter
+dbus
+polkit
 ibus-typing-booster
 ibus-gtk4
 nautilus

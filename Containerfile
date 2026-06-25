@@ -6,7 +6,7 @@ FROM quay.io/fedora/fedora-bootc:44 AS builder
 FROM quay.io/fedora/fedora-bootc:44 AS final
 LABEL ostree.bootable="true"
 LABEL containers.bootc="1"
-COPY locale.conf post-install.sh pacotes_desktop pacotes_necessarios post-install.service vconsole.conf zram-generator.conf ./
+COPY locale.conf post-install.sh pacotes_desktop pacotes_necessarios post-install.service vconsole.conf zram-generator.conf greetd.toml ./
 RUN mkdir -vp /var/roothome /data /var/home && \
     dnf5 -y upgrade --refresh && \
     dnf5 -y install kernel-modules-extra --refresh && \
@@ -31,11 +31,16 @@ RUN mkdir -vp /var/roothome /data /var/home && \
     /var/tmp/*
 
 # Adiciona o repositório Terra
-RUN dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release -y && \
+# RUN dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release -y && \
+#     dnf5 clean all
+
+# Adiciona o COPR do Hyprland (necessario para o noctalia v5)
+RUN dnf5 install dnf5-plugins -y && \
+    dnf5 copr enable lionheartp/Hyprland -y && \
     dnf5 clean all
 
 # Instalação do niri com o noctalia
-RUN dnf5 install niri noctalia -y && \
+RUN dnf5 install niri noctalia-git -y && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \
@@ -47,8 +52,11 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     grep -v '^#' pacotes_desktop | tr '\n' ' ' | xargs dnf5 install -y && \
     systemctl mask systemd-remount-fs.service && \
     systemctl mask akmods-keygen@akmods-keygen.service && \
+    systemctl mask rtkit-daemon.service && \
     systemctl enable libvirtd.service && \
     systemctl enable spice-vdagentd.service && \
+    mkdir -vp /etc/greetd && mv -v greetd.toml /etc/greetd/config.toml && \
+    systemctl enable greetd.service && \
     rm -fv pacotes_necessarios pacotes_desktop && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
