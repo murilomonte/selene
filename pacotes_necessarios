@@ -20,6 +20,7 @@ unzip
 zip
 usbutils
 sysfsutils
+rsync
 
 # Pacotes não essênciais (pode ser alterado a gosto)
 @virtualization

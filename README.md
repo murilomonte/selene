@@ -69,6 +69,4 @@ sudo reboot
 
 ***
 
-![Selene](/assets/selene.webp)
-
 Moonlight guide us... 🌙
