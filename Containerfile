@@ -53,7 +53,6 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     systemctl mask systemd-remount-fs.service && \
     systemctl mask akmods-keygen@akmods-keygen.service && \
     systemctl mask rtkit-daemon.service && \
-    systemctl mask systemd-sysusers.service && \
     systemctl enable libvirtd.service && \
     systemctl enable spice-vdagentd.service && \
     mkdir -vp /etc/greetd && mv -v greetd.toml /etc/greetd/config.toml && \
