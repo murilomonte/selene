@@ -40,7 +40,7 @@ RUN dnf5 install dnf5-plugins -y && \
     dnf5 clean all
 
 # Instalação do niri com dms
-RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock -y && \
+RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock,fuzzel -y && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \

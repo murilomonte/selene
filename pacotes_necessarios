@@ -21,6 +21,8 @@ zip
 usbutils
 sysfsutils
 rsync
+gvfs-mtp
+libmtp
 
 # Pacotes não essênciais (pode ser alterado a gosto)
 @virtualization
