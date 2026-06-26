@@ -1,0 +1,8 @@
+[Unit]
+Description=Apply bootc updates silently (no reboot)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bootc upgrade

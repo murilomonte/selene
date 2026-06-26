@@ -1,0 +1,9 @@
+[Unit]
+Description=Periodic silent bootc upgrade
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

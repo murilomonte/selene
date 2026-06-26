@@ -5,7 +5,7 @@ FROM quay.io/fedora/fedora-bootc:44 AS builder
 FROM quay.io/fedora/fedora-bootc:44 AS final
 LABEL ostree.bootable="true"
 LABEL containers.bootc="1"
-COPY locale.conf post-install.sh pacotes_desktop pacotes_necessarios post-install.service vconsole.conf zram-generator.conf greetd.toml first-boot.sh first-boot.service ./
+COPY locale.conf post-install.sh pacotes_desktop pacotes_necessarios post-install.service vconsole.conf zram-generator.conf greetd.toml first-boot.sh first-boot.service sysusers-first.conf ./
 RUN mkdir -vp /var/roothome /data /var/home && \
     dnf5 -y upgrade --refresh && \
     dnf5 -y install kernel-modules-extra --refresh && \
@@ -74,7 +74,21 @@ RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stabl
     dnf5 clean all && \
     rm -rfv /var/cache/*
 
-RUN grpconv && pwconv && systemd-sysusers
+# Desabilita o timer padrão para atualizações
+RUN systemctl disable bootc-fetch-apply-updates.timer
+    
+# Cria um timer customizado que só faz o upgrade, sem reboot
+COPY bootc-upgrade-silent.service /etc/systemd/system/
+COPY bootc-upgrade-silent.timer /etc/systemd/system/
+    
+RUN systemctl enable bootc-upgrade-silent.timer
+    
+RUN systemd-sysusers && \
+    grpconv && pwconv
+
+# Garante que o systemd-sysusers rode antes do udevd
+RUN mkdir -p /usr/lib/systemd/system/systemd-udevd.service.d && \
+    mv -v sysusers-first.conf /usr/lib/systemd/system/systemd-udevd.service.d/sysusers-first.conf
 
 # Verificação da imagem com o bootc container lint
 RUN bootc container lint
@@ -92,4 +106,3 @@ RUN --mount=from=final,src=/,target=/chunkah,ro \
 FROM oci:out
 LABEL ostree.bootable="true"
 LABEL containers.bootc="1"
-
