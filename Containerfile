@@ -84,16 +84,13 @@ RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stabl
     rm -rfv /var/cache/*
 
 # Desabilita o timer padrão para atualizações
-RUN systemctl disable bootc-fetch-apply-updates.timer
+RUN systemctl mask bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.service
     
 # Cria um timer customizado que só faz o upgrade, sem reboot
 COPY bootc-upgrade-silent.service /etc/systemd/system/
 COPY bootc-upgrade-silent.timer /etc/systemd/system/
     
 RUN systemctl enable bootc-upgrade-silent.timer
-    
-# Pré-popula usuários e grupos do sistema para evitar erros de ordering no boot
-RUN systemd-sysusers
 
 # Verificação da imagem com o bootc container lint
 RUN bootc container lint
