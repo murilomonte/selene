@@ -70,6 +70,12 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     /var/usrlocal/share/applications/mimeinfo.cache \
     /var/roothome/.*
 
+# Instalação do Ghostty
+RUN dnf5 copr enable scottames/ghostty -y && \
+    dnf5 install ghostty -y && \
+    dnf5 clean all && \
+    rm -rfv /var/cache/*
+
 # Instalação do Tailscale
 RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
     dnf5 install tailscale -y && \
@@ -86,6 +92,9 @@ COPY bootc-upgrade-silent.timer /etc/systemd/system/
     
 RUN systemctl enable bootc-upgrade-silent.timer
     
+# Pré-popula usuários e grupos do sistema para evitar erros de ordering no boot
+RUN systemd-sysusers
+
 # Verificação da imagem com o bootc container lint
 RUN bootc container lint
 

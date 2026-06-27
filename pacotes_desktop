@@ -15,6 +15,7 @@ gnome-disk-utility
 baobab
 gnome-keyring-pam
 ddccontrol
+gnome-logs
 
 # Para o dms
 cliphist
