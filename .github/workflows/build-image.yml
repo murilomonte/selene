@@ -79,6 +79,7 @@ jobs:
 
       - name: Gerar ISO
         run: |
+          sudo podman pull "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
           mkdir -p ./output
           sudo podman run \
             --rm --privileged --pull=newer \

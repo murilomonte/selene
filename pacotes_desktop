@@ -13,6 +13,8 @@ nautilus
 ptyxis
 gnome-disk-utility
 baobab
+gnome-keyring-pam
+ddccontrol
 
 # Para o dms
 cliphist
