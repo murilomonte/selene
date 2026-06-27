@@ -8,8 +8,11 @@ LABEL containers.bootc="1"
 COPY locale.conf post-install.sh pacotes_desktop pacotes_necessarios post-install.service vconsole.conf zram-generator.conf greetd.toml first-boot.sh first-boot.service ./
 RUN mkdir -vp /var/roothome /data /var/home && \
     dnf5 -y upgrade --refresh && \
-    dnf5 -y install kernel-modules-extra --refresh && \
+    dnf5 -y install kernel-modules-extra plymouth plymouth-theme-spinner --refresh && \
+    plymouth-set-default-theme spinner && \
     printf 'omit_dracutmodules+=" nfs "\nomit_drivers+=" nfs nfsv3 nfsv4 nfs_acl nfs_common sunrpc rxrpc rpcrdma auth_rpcgss rpcsec_gss_krb5 "\n' | tee /etc/dracut.conf.d/no-nfs.conf && \
+    printf 'add_dracutmodules+=" plymouth "\n' > /etc/dracut.conf.d/plymouth.conf && \
+    echo "splash quiet" > /usr/lib/kernel/cmdline && \
     kver="$(rpm -q kernel-core --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
     dracut -f /usr/lib/modules/${kver}/initramfs.img ${kver} && \
     dnf5 -y install wget && \

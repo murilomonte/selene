@@ -77,6 +77,28 @@ jobs:
               "docker://${BASE}:${TAG}"
           done
 
+      - name: Gerar ISO
+        run: |
+          mkdir -p ./output
+          sudo podman run \
+            --rm --privileged --pull=newer \
+            --security-opt label=type:unconfined_t \
+            -v ./output:/output \
+            -v ./config.toml:/config.toml:ro \
+            -v /var/lib/containers/storage:/var/lib/containers/storage \
+            quay.io/centos-bootc/bootc-image-builder:latest \
+            --type anaconda-iso --rootfs btrfs \
+            "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          sudo chown -R "$USER:$USER" ./output
+
+      - name: Upload da ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: selene-iso
+          path: ./output/**/install.iso
+          retention-days: 5
+          if-no-files-found: error
+
       - name: Notificar no Telegram
         if: always()
         uses: appleboy/telegram-action@master
