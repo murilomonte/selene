@@ -22,12 +22,13 @@ usbutils
 sysfsutils
 rsync
 gvfs-mtp
+xdg-user-dirs
 libmtp
 
 # Pacotes não essênciais (pode ser alterado a gosto)
-@virtualization
+qemu-kvm
+libvirt-daemon-kvm
+libvirt-daemon-config-network
 distrobox
 ps_mem
-ripgrep
 fastfetch
-adw-gtk3-theme
