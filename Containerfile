@@ -5,7 +5,7 @@ FROM quay.io/fedora/fedora-bootc:44 AS builder
 FROM quay.io/fedora/fedora-bootc:44 AS final
 LABEL ostree.bootable="true"
 LABEL containers.bootc="1"
-COPY locale.conf post-install.sh pacotes_desktop pacotes_necessarios post-install.service vconsole.conf zram-generator.conf greetd.toml first-boot.sh first-boot.service ./
+COPY config/locale.conf config/vconsole.conf config/zram-generator.conf config/greetd.toml scripts/post-install.sh scripts/first-boot.sh packages/base packages/desktop systemd/post-install.service systemd/first-boot.service ./
 RUN mkdir -vp /var/roothome /data /var/home && \
     dnf5 -y upgrade --refresh && \
     dnf5 -y install kernel-modules-extra plymouth plymouth-theme-spinner --refresh && \
@@ -51,8 +51,8 @@ RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock,fuzzel -y && \
     /var/tmp/*
 
 # instalação dos pacotes necessários para o ambiente de desktop e a base
-RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
-    grep -v '^#' pacotes_desktop | tr '\n' ' ' | xargs dnf5 install -y && \
+RUN grep -v '^#' base | tr '\n' ' ' | xargs dnf5 install -y && \
+    grep -v '^#' desktop | tr '\n' ' ' | xargs dnf5 install -y && \
     systemctl mask systemd-remount-fs.service && \
     systemctl mask akmods-keygen@akmods-keygen.service && \
     systemctl mask rtkit-daemon.service && \
@@ -61,7 +61,7 @@ RUN grep -v '^#' pacotes_necessarios | tr '\n' ' ' | xargs dnf5 install -y && \
     mkdir -vp /etc/greetd && mv -v greetd.toml /etc/greetd/config.toml && \
     systemctl enable greetd.service && \
     systemctl --global enable dms && \
-    rm -fv pacotes_necessarios pacotes_desktop && \
+    rm -fv base desktop && \
     dnf5 clean all && \
     rm -rfv /var/cache/* \
     /var/lib/* \
@@ -77,12 +77,14 @@ RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stabl
     dnf5 clean all && \
     rm -rfv /var/cache/*
 
+COPY usr/lib/udev/rules.d/99-disable-xhci-wakeup.rules /usr/lib/udev/rules.d/
+
 # Desabilita o timer padrão para atualizações
 RUN systemctl mask bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.service
     
 # Cria um timer customizado que só faz o upgrade, sem reboot
-COPY bootc-upgrade-silent.service /etc/systemd/system/
-COPY bootc-upgrade-silent.timer /etc/systemd/system/
+COPY systemd/bootc-upgrade-silent.service /etc/systemd/system/
+COPY systemd/bootc-upgrade-silent.timer /etc/systemd/system/
     
 RUN systemctl enable bootc-upgrade-silent.timer
 

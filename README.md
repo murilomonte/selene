@@ -2,7 +2,7 @@
 
 ## Sobre
 
-Imagem bootc de um sistema imutável baseado no Fedora 44 utilizando Niri e Dank Material Shell, com alguns pacotes adicionais, como Tailscale.
+Imagem bootc de um sistema imutável baseado no Fedora utilizando Niri e Dank Material Shell, com alguns pacotes adicionais, como Tailscale.
 
 ## Arquitetura
 
@@ -12,30 +12,49 @@ Imagem bootc de um sistema imutável baseado no Fedora 44 utilizando Niri e Dank
 
 ### Estrutura de Arquivos
 
-| Arquivo | Função |
-|---|---|
-| `Containerfile` | Instruções de build da imagem (instalação de pacotes e drivers) |
-| `pacotes_desktop` | Lista de pacotes relacionados à interface gráfica (GNOME, Plasma e afins) |
-| `pacotes_necessarios` | Lista de pacotes essenciais ao sistema, acrescida de pacotes de escolha pessoal |
-| `post-install.sh` | Script de pós-instalação: remove o repositório Fedora Flatpak, adiciona o Flathub e instala os Flatpaks |
-| `.github/workflows` | Arquivo `.yml` responsável pelo build automático via GitHub Actions |
-| `post-install.service` | Serviço systemd que executa o script de pós-instalação no primeiro boot |
-| `vconsole.conf` | Configuração do TTY para pt-BR |
-| `locale.conf` | Configuração de localidade do sistema para pt-BR |
-| `config.toml` | Arquivo de kickstart do Anaconda para geração de ISO de instalação |
-| `zram-generator.conf` | Configura o zram com tamanho igual ao da RAM, usando o algoritmo de compressão zstd |
-| `greetd.toml` | Arquivo para configuração do greetd |
-| `first-boot.service` e `first-boot.sh` | Arquivos para auxílio da configuração do greetd |
+```
+selene/
+├── Containerfile                        # Instruções de build da imagem
+├── anaconda/
+│   └── config.toml                      # Kickstart do Anaconda para geração de ISO
+├── config/
+│   ├── locale.conf                      # Localidade do sistema (pt-BR)
+│   ├── vconsole.conf                    # Configuração do TTY (pt-BR)
+│   ├── zram-generator.conf              # zram com tamanho da RAM e compressão zstd
+│   └── greetd.toml                      # Configuração do greeter greetd
+├── packages/
+│   ├── base                             # Pacotes essenciais e de escolha pessoal
+│   └── desktop                          # Pacotes da interface gráfica
+├── scripts/
+│   ├── first-boot.sh                    # Configuração executada no primeiro boot
+│   └── post-install.sh                  # Adiciona Flathub e instala Flatpaks
+├── systemd/
+│   ├── first-boot.service               # Serviço que executa first-boot.sh
+│   ├── post-install.service             # Serviço que executa post-install.sh
+│   ├── bootc-upgrade-silent.service     # Serviço de atualização silenciosa
+│   └── bootc-upgrade-silent.timer       # Timer para atualização automática
+└── usr/lib/udev/rules.d/
+    └── 99-disable-xhci-wakeup.rules     # Desabilita wakeup via USB 3.0
+```
 
 ## Uso
 
-## Primeiro uso
+## ISO
+
+Uma ISO é gerada automáticamente pelo github actions.
+
+- Entre na aba actions
+- Selecione o workflow
+- Baixe a ISO na seção de artefatos.
+- Use a ISO para instalar como qualquer sistema linux.
+
+## Rebase
 
 Uma vez que você esteja em algum Fedora Atomico, é só rodar os seguintes comandos:
 
 ```bash
 # Ver a versão atual da imagem
-bootc status
+sudo bootc status
 
 # Migrar para esta imagem (primeira utilização)
 sudo bootc switch ghcr.io/murilomonte/selene:latest
