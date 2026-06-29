@@ -4,7 +4,6 @@ glycin-thumbnailer
 gnome-epub-thumbnailer
 adw-gtk3-theme
 libnma
-greetd
 dbus
 polkit
 ibus-typing-booster
@@ -22,7 +21,6 @@ cliphist
 i2c-tools
 matugen
 wl-clipboard
-dms-greeter
 qt6-qtmultimedia
 power-profiles-daemon
 cups-pk-helper

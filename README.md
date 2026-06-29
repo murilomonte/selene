@@ -39,7 +39,7 @@ selene/
 
 ## Uso
 
-## ISO
+### ISO
 
 Uma ISO é gerada automáticamente pelo github actions.
 
@@ -48,7 +48,7 @@ Uma ISO é gerada automáticamente pelo github actions.
 - Baixe a ISO na seção de artefatos.
 - Use a ISO para instalar como qualquer sistema linux.
 
-## Rebase
+### Rebase
 
 Uma vez que você esteja em algum Fedora Atomico, é só rodar os seguintes comandos:
 

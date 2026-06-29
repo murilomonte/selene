@@ -5,7 +5,7 @@ FROM quay.io/fedora/fedora-bootc:44 AS builder
 FROM quay.io/fedora/fedora-bootc:44 AS final
 LABEL ostree.bootable="true"
 LABEL containers.bootc="1"
-COPY config/locale.conf config/vconsole.conf config/zram-generator.conf config/greetd.toml scripts/post-install.sh scripts/first-boot.sh packages/base packages/desktop systemd/post-install.service systemd/first-boot.service ./
+COPY config/locale.conf config/vconsole.conf config/zram-generator.conf scripts/post-install.sh scripts/first-boot.sh packages/base packages/desktop systemd/post-install.service systemd/first-boot.service ./
 RUN mkdir -vp /var/roothome /data /var/home && \
     dnf5 -y upgrade --refresh && \
     dnf5 -y install kernel-modules-extra plymouth plymouth-theme-spinner --refresh && \
@@ -50,6 +50,14 @@ RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock,fuzzel -y && \
     /var/log/* \
     /var/tmp/*
 
+# Instalação do gnome-shell minimalista (para fallback)
+RUN dnf5 install gnome-shell --setopt=install_weak_deps=False -y && \
+    dnf5 clean all && \
+    rm -rfv /var/cache/* \
+    /var/lib/* \
+    /var/log/* \
+    /var/tmp/*
+
 # instalação dos pacotes necessários para o ambiente de desktop e a base
 RUN grep -v '^#' base | tr '\n' ' ' | xargs dnf5 install -y && \
     grep -v '^#' desktop | tr '\n' ' ' | xargs dnf5 install -y && \
@@ -58,8 +66,7 @@ RUN grep -v '^#' base | tr '\n' ' ' | xargs dnf5 install -y && \
     systemctl mask rtkit-daemon.service && \
     systemctl enable libvirtd.service && \
     systemctl enable spice-vdagentd.service && \
-    mkdir -vp /etc/greetd && mv -v greetd.toml /etc/greetd/config.toml && \
-    systemctl enable greetd.service && \
+    systemctl enable gdm.service && \
     systemctl --global enable dms && \
     rm -fv base desktop && \
     dnf5 clean all && \
