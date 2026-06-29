@@ -36,6 +36,12 @@ RUN mkdir -vp /var/roothome /data /var/home && \
     /var/log/* \
     /var/tmp/*
 
+# Adiciona o COPR do dms
+RUN dnf5 install dnf5-plugins -y && \
+    dnf5 copr enable avengemedia/danklinux -y && \
+    dnf5 copr enable avengemedia/dms -y && \
+    dnf5 clean all
+
 # Instalação do Tailscale
 RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
     dnf5 install tailscale -y && \
@@ -43,12 +49,6 @@ RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stabl
     dnf5 clean all && \
     rm -rfv /var/cache/*
     
-# Adiciona o COPR do dms
-RUN dnf5 install dnf5-plugins -y && \
-    dnf5 copr enable avengemedia/danklinux -y && \
-    dnf5 copr enable avengemedia/dms -y && \
-    dnf5 clean all
-
 # Instalação do niri com dms
 RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock,fuzzel -y && \
     dnf5 clean all && \
