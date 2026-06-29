@@ -1,8 +1,10 @@
 # Selene
 
+![Screenshot](/assets/screenshot-cover.jpg)
+
 ## Sobre
 
-Imagem bootc de um sistema imutável baseado no Fedora utilizando Niri e Dank Material Shell, com alguns pacotes adicionais, como Tailscale.
+Imagem bootc de um sistema imutável baseado no Fedora utilizando [Niri](https://github.com/niri-wm/niri), [Dank Material Shell](https://github.com/AvengeMedia/DankMaterialShell) e um GNOME minimo como fallback.
 
 ## Arquitetura
 
@@ -21,7 +23,6 @@ selene/
 │   ├── locale.conf                      # Localidade do sistema (pt-BR)
 │   ├── vconsole.conf                    # Configuração do TTY (pt-BR)
 │   ├── zram-generator.conf              # zram com tamanho da RAM e compressão zstd
-│   └── greetd.toml                      # Configuração do greeter greetd
 ├── packages/
 │   ├── base                             # Pacotes essenciais e de escolha pessoal
 │   └── desktop                          # Pacotes da interface gráfica
@@ -39,18 +40,20 @@ selene/
 
 ## Uso
 
+É recomendado fazer a instalação do sistema a partir da ISO gerada pelo gh actions. Caso contrário, ao fazer o rebase podem haver conflitos a serem resolvidos manualmente.
+
 ### ISO
 
-Uma ISO é gerada automáticamente pelo github actions.
+A ISO é gerada automáticamente pelo github actions.
 
-- Entre na aba actions
-- Selecione o workflow
+- Entre na aba actions.
+- Selecione o workflow mais recente.
 - Baixe a ISO na seção de artefatos.
 - Use a ISO para instalar como qualquer sistema linux.
 
 ### Rebase
 
-Uma vez que você esteja em algum Fedora Atomico, é só rodar os seguintes comandos:
+Uma vez que você esteja em algum Fedora Atômico, é só rodar os seguintes comandos:
 
 ```bash
 # Ver a versão atual da imagem
@@ -63,7 +66,7 @@ sudo bootc switch ghcr.io/murilomonte/selene:latest
 sudo bootc rollback
 ```
 
-### Manutenção
+## Manutenção
 
 ```bash
 # Verificar se há nova imagem disponível

@@ -8,6 +8,7 @@ LABEL containers.bootc="1"
 COPY config/locale.conf config/vconsole.conf config/zram-generator.conf scripts/post-install.sh scripts/first-boot.sh packages/base packages/desktop systemd/post-install.service systemd/first-boot.service ./
 RUN mkdir -vp /var/roothome /data /var/home && \
     dnf5 -y upgrade --refresh && \
+    rm -f /etc/gshadow \
     dnf5 -y install kernel-modules-extra plymouth plymouth-theme-spinner --refresh && \
     plymouth-set-default-theme spinner && \
     printf 'omit_dracutmodules+=" nfs "\nomit_drivers+=" nfs nfsv3 nfsv4 nfs_acl nfs_common sunrpc rxrpc rpcrdma auth_rpcgss rpcsec_gss_krb5 "\n' | tee /etc/dracut.conf.d/no-nfs.conf && \
@@ -60,7 +61,6 @@ RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock,fuzzel -y && \
 # Instalação do gnome-shell minimalista (para fallback)
 RUN dnf5 install gnome-shell --setopt=install_weak_deps=False -y && \
     dnf5 clean all && \
-    systemd-sysusers /usr/lib/sysusers.d/gdm.conf && \
     rm -rfv /var/cache/* \
     /var/lib/* \
     /var/log/* \
