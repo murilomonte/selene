@@ -36,6 +36,13 @@ RUN mkdir -vp /var/roothome /data /var/home && \
     /var/log/* \
     /var/tmp/*
 
+# Instalação do Tailscale
+RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
+    dnf5 install tailscale -y && \
+    systemctl enable tailscaled.service && \
+    dnf5 clean all && \
+    rm -rfv /var/cache/*
+    
 # Adiciona o COPR do dms
 RUN dnf5 install dnf5-plugins -y && \
     dnf5 copr enable avengemedia/danklinux -y && \
@@ -53,6 +60,7 @@ RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock,fuzzel -y && \
 # Instalação do gnome-shell minimalista (para fallback)
 RUN dnf5 install gnome-shell --setopt=install_weak_deps=False -y && \
     dnf5 clean all && \
+    systemd-sysusers /usr/lib/sysusers.d/gdm.conf && \
     rm -rfv /var/cache/* \
     /var/lib/* \
     /var/log/* \
@@ -66,7 +74,6 @@ RUN grep -v '^#' base | tr '\n' ' ' | xargs dnf5 install -y && \
     systemctl mask rtkit-daemon.service && \
     systemctl enable libvirtd.service && \
     systemctl enable spice-vdagentd.service && \
-    systemctl enable gdm.service && \
     systemctl --global enable dms && \
     rm -fv base desktop && \
     dnf5 clean all && \
@@ -76,13 +83,6 @@ RUN grep -v '^#' base | tr '\n' ' ' | xargs dnf5 install -y && \
     /var/tmp/* \
     /var/usrlocal/share/applications/mimeinfo.cache \
     /var/roothome/.*
-
-# Instalação do Tailscale
-RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
-    dnf5 install tailscale -y && \
-    systemctl enable tailscaled.service && \
-    dnf5 clean all && \
-    rm -rfv /var/cache/*
 
 COPY usr/lib/udev/rules.d/99-disable-xhci-wakeup.rules /usr/lib/udev/rules.d/
 
