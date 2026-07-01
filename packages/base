@@ -24,6 +24,8 @@ rsync
 gvfs-mtp
 xdg-user-dirs
 libmtp
+brightnessctl
+ddcutil
 
 # Pacotes não essênciais (pode ser alterado a gosto)
 qemu-kvm
