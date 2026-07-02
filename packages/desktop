@@ -6,8 +6,6 @@ adw-gtk3-theme
 libnma
 dbus
 polkit
-ibus-typing-booster
-ibus-gtk4
 nautilus
 ptyxis
 gnome-disk-utility
@@ -15,6 +13,13 @@ baobab
 gnome-keyring-pam
 ddccontrol
 gnome-logs
+ibus-typing-booster
+ibus-gtk4
+ibus
+ibus-anthy
+ibus-gtk3
+ibus-panel
+ibus-qt
 
 # Para o dms
 cliphist
@@ -24,3 +29,4 @@ wl-clipboard
 qt6-qtmultimedia
 power-profiles-daemon
 cups-pk-helper
+accountsservice

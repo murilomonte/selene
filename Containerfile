@@ -83,6 +83,10 @@ RUN grep -v '^#' base | tr '\n' ' ' | xargs dnf5 install -y && \
     /var/usrlocal/share/applications/mimeinfo.cache \
     /var/roothome/.*
 
+# Variáveis do IBus
+COPY etc/environment.d/50-ibus.conf /etc/environment.d/50-ibus.conf
+    
+# Impossibilita que dispositivos usb acordem o sistema (possivel problema no meu hardware)
 COPY usr/lib/udev/rules.d/99-disable-xhci-wakeup.rules /usr/lib/udev/rules.d/
 
 # Desabilita o timer padrão para atualizações
@@ -91,7 +95,6 @@ RUN systemctl mask bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.ser
 # Cria um timer customizado que só faz o upgrade, sem reboot
 COPY systemd/bootc-upgrade-silent.service /etc/systemd/system/
 COPY systemd/bootc-upgrade-silent.timer /etc/systemd/system/
-    
 RUN systemctl enable bootc-upgrade-silent.timer
 
 # Verificação da imagem com o bootc container lint
