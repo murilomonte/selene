@@ -42,13 +42,19 @@ RUN dnf5 install dnf5-plugins -y && \
     dnf5 copr enable avengemedia/dms -y && \
     dnf5 clean all
 
+# Ativa os repositórios RPM Fusion (necessário para o Steam)
+RUN dnf5 install -y \
+    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
+    dnf5 clean all
+
 # Instalação do Tailscale
 RUN dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
     dnf5 install tailscale -y && \
     systemctl enable tailscaled.service && \
     dnf5 clean all && \
     rm -rfv /var/cache/*
-    
+
 # Instalação do niri com dms
 RUN dnf5 install dms niri --exclude=waybar,alacritty,swaylock,fuzzel -y && \
     dnf5 clean all && \
@@ -85,13 +91,13 @@ RUN grep -v '^#' base | tr '\n' ' ' | xargs dnf5 install -y && \
 
 # Variáveis do IBus
 COPY etc/environment.d/50-ibus.conf /etc/environment.d/50-ibus.conf
-    
+
 # Impossibilita que dispositivos usb acordem o sistema (possivel problema no meu hardware)
 COPY usr/lib/udev/rules.d/99-disable-xhci-wakeup.rules /usr/lib/udev/rules.d/
 
 # Desabilita o timer padrão para atualizações
 RUN systemctl mask bootc-fetch-apply-updates.timer bootc-fetch-apply-updates.service
-    
+
 # Cria um timer customizado que só faz o upgrade, sem reboot
 COPY systemd/bootc-upgrade-silent.service /etc/systemd/system/
 COPY systemd/bootc-upgrade-silent.timer /etc/systemd/system/
