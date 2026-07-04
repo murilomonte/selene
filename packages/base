@@ -5,6 +5,7 @@ ffmpegthumbnailer
 xdg-utils
 compsize
 langpacks-core-pt_BR
+glibc-langpack-en
 flatpak
 git
 tree
