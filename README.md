@@ -4,12 +4,12 @@
 
 ## Sobre
 
-Imagem bootc de um sistema imutável baseado no Fedora utilizando [Niri](https://github.com/niri-wm/niri), [Dank Material Shell](https://github.com/AvengeMedia/DankMaterialShell) e um GNOME minimo como fallback.
+Imagem bootc de um sistema imutável baseado no Fedora Silverblue, com GNOME e pacotes adicionais (Steam, Tailscale, virtualização, entre outros).
 
 ## Arquitetura
 
-- **Base:** [fedora-bootc](https://quay.io/repository/fedora/fedora-bootc) (Imagem OCI inicializável Oficial do projeto Fedora).
-- **Interface:** Niri com Dank Material Shell.
+- **Base:** [Fedora Silverblue](https://quay.io/repository/fedora-ostree-desktops/silverblue) (Imagem OCI inicializável Oficial do projeto Fedora, com GNOME).
+- **Interface:** GNOME (padrão do Silverblue).
 - **Automação:** GitHub Actions com build diário às 03h45 (horário de Brasília) e notificação no telegram.
 
 ### Estrutura de Arquivos
@@ -17,43 +17,22 @@ Imagem bootc de um sistema imutável baseado no Fedora utilizando [Niri](https:/
 ```
 selene/
 ├── Containerfile                        # Instruções de build da imagem
-├── anaconda/
-│   └── config.toml                      # Kickstart do Anaconda para geração de ISO
-├── config/
-│   ├── locale.conf                      # Localidade do sistema (pt-BR)
-│   ├── vconsole.conf                    # Configuração do TTY (pt-BR)
-│   ├── zram-generator.conf              # zram com tamanho da RAM e compressão zstd
 ├── packages/
 │   ├── base                             # Pacotes essenciais e de escolha pessoal
 │   └── desktop                          # Pacotes da interface gráfica
 ├── scripts/
 │   ├── first-boot.sh                    # Configuração executada no primeiro boot
 │   └── post-install.sh                  # Adiciona Flathub e instala Flatpaks
-├── systemd/
-│   ├── first-boot.service               # Serviço que executa first-boot.sh
-│   ├── post-install.service             # Serviço que executa post-install.sh
-│   ├── bootc-upgrade-silent.service     # Serviço de atualização silenciosa
-│   └── bootc-upgrade-silent.timer       # Timer para atualização automática
-└── usr/lib/udev/rules.d/
-    └── 99-disable-xhci-wakeup.rules     # Desabilita wakeup via USB 3.0
+└── systemd/
+    ├── first-boot.service               # Serviço que executa first-boot.sh
+    └── post-install.service             # Serviço que executa post-install.sh
 ```
 
 ## Uso
 
-É recomendado fazer a instalação do sistema a partir da ISO gerada pelo gh actions. Caso contrário, ao fazer o rebase podem haver conflitos a serem resolvidos manualmente.
-
-### ISO
-
-A ISO é gerada automáticamente pelo github actions.
-
-- Entre na aba actions.
-- Selecione o workflow mais recente.
-- Baixe a ISO na seção de artefatos.
-- Use a ISO para instalar como qualquer sistema linux.
-
 ### Rebase
 
-Uma vez que você esteja em algum Fedora Atômico, é só rodar os seguintes comandos:
+A partir de uma instalação do Fedora Silverblue, é só rodar os seguintes comandos:
 
 ```bash
 # Ver a versão atual da imagem

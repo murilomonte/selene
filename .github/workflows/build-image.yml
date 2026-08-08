@@ -28,7 +28,11 @@ jobs:
       - name: Liberar espaço em disco
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
-            "/usr/local/share/boost" "$AGENT_TOOLSDIRECTORY"
+            "/usr/local/share/boost" "$AGENT_TOOLSDIRECTORY" \
+            /usr/lib/jvm /usr/local/.ghcup /usr/share/swift \
+            /opt/hostedtoolcache/CodeQL /usr/local/share/powershell
+          sudo swapoff -a && sudo rm -f /mnt/swapfile
+          df -h
 
       - name: Gerar metadados do build
         id: meta
@@ -48,11 +52,18 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | buildah login \
             -u "${{ github.actor }}" --password-stdin "${{ env.REGISTRY }}"
 
+      - name: Capturar config da imagem base para o chunkah
+        run: |
+          BASE_IMAGE=$(grep '^FROM' Containerfile | head -n 1 | awk '{print $2}')
+          buildah pull "$BASE_IMAGE"
+          buildah inspect --type image "$BASE_IMAGE" | jq -c '.OCIv1.config' > chunkah-config.json
+
       - name: Build da imagem
         run: |
           buildah build \
             --skip-unused-stages=false \
             --security-opt label=disable \
+            --build-arg CHUNKAH_CONFIG_STR="$(cat chunkah-config.json)" \
             -t "${{ steps.meta.outputs.primary }}" \
             -f Containerfile \
             -v "$(pwd):/run/src" \
@@ -77,29 +88,6 @@ jobs:
               "docker://${BASE}:${TAG}"
           done
 
-      - name: Gerar ISO
-        run: |
-          sudo podman pull "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
-          mkdir -p ./output
-          sudo podman run \
-            --rm --privileged --pull=newer \
-            --security-opt label=type:unconfined_t \
-            -v ./output:/output \
-            -v ./anaconda/config.toml:/config.toml:ro \
-            -v /var/lib/containers/storage:/var/lib/containers/storage \
-            quay.io/centos-bootc/bootc-image-builder:latest \
-            --type anaconda-iso --rootfs btrfs \
-            "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
-          sudo chown -R "$USER:$USER" ./output
-
-      - name: Upload da ISO
-        uses: actions/upload-artifact@v4
-        with:
-          name: selene-iso
-          path: ./output/**/install.iso
-          retention-days: 5
-          if-no-files-found: error
-
       - name: Notificar no Telegram
         if: always()
         uses: appleboy/telegram-action@master
@@ -107,6 +95,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
+            🌙 Selene
             ${{ job.status == 'success' && '✅ Rebuild Concluído!' || '❌ Erro no Rebuild!' }}
             📦 Base: ${{ steps.meta.outputs.version }}
             🏷️ Tag: ${{ steps.meta.outputs.version }}-${{ steps.meta.outputs.date }}

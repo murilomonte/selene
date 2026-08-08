@@ -1,7 +1,7 @@
 [Unit]
 Description=Selene First Boot Setup
 After=local-fs.target
-Before=greetd.service
+Before=gdm.service
 
 [Service]
 Type=oneshot

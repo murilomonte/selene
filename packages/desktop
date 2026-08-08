@@ -1,32 +1,5 @@
 # Aqui são os pacote referentes ao Desktop no caso Gnome, mas pode ser alterado para outro facilmente colocando-os aqui
 evince-thumbnailer
-glycin-thumbnailer
-gnome-epub-thumbnailer
 adw-gtk3-theme
-libnma
-dbus
-polkit
-nautilus
-ptyxis
-gnome-disk-utility
-baobab
-gnome-keyring-pam
 ddccontrol
 gnome-logs
-ibus-typing-booster
-ibus-gtk4
-ibus
-ibus-anthy
-ibus-gtk3
-ibus-panel
-ibus-qt
-
-# Para o dms
-cliphist
-i2c-tools
-matugen
-wl-clipboard
-qt6-qtmultimedia
-power-profiles-daemon
-cups-pk-helper
-accountsservice
