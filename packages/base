@@ -11,11 +11,9 @@ brightnessctl
 ddcutil
 
 # Pacotes não essênciais (pode ser alterado a gosto)
-qemu-kvm
-libvirt-daemon-kvm
-libvirt-daemon-config-network
 distrobox
 ps_mem
 fastfetch
 steam
 tailscale
+just

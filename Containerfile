@@ -64,7 +64,6 @@ RUN grep -v '^#' desktop | tr '\n' ' ' | xargs dnf5 install -y && \
 # Outros
 RUN systemctl mask systemd-remount-fs.service
 
-
 # Verificação da imagem com o bootc container lint
 RUN bootc container lint
 

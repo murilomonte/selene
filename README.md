@@ -33,15 +33,20 @@ selene/
 A partir de uma instalação do Fedora Silverblue, é só rodar os seguintes comandos:
 
 ```bash
-# Ver a versão atual da imagem
+# Fixa o deployment pra ele nunca ser removido automaticamente
+sudo ostree admin pin 0
+
+# Mostra a versão atual da imagem
 sudo bootc status
 
-# Migrar para esta imagem (primeira utilização)
+# Migra para esta imagem (primeira utilização)
 sudo bootc switch ghcr.io/murilomonte/selene:latest
 
 # Para reverter para a imagem anterior
 sudo bootc rollback
 ```
+
+> Com o deployment fixado, o Silverblue puro continua disponível como opção no GRUB pra sempre (até você rodar `sudo ostree admin pin --unpin <índice>`), independente de quantas vezes você trocar de imagem depois.
 
 ## Manutenção
 
