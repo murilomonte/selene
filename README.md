@@ -1,7 +1,5 @@
 # Selene
 
-![Screenshot](/assets/screenshot-cover.jpg)
-
 ## Sobre
 
 Imagem bootc de um sistema imutável baseado no Fedora Silverblue, com GNOME e pacotes adicionais (Steam, Tailscale, virtualização, entre outros).
