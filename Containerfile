@@ -6,14 +6,6 @@ LABEL containers.bootc="1"
 RUN dnf5 -y upgrade --refresh && \
     dnf5 clean all
 
-# Serviço de first boot (cria os diretórios XDG do usuário)
-COPY scripts/first-boot.sh systemd/first-boot.service ./
-RUN mv -v first-boot.sh /usr/bin/first-boot.sh && \
-    mv -v first-boot.service /usr/lib/systemd/system/first-boot.service && \
-    chmod +x /usr/bin/first-boot.sh && \
-    systemctl enable first-boot.service && \
-    rm -fv first-boot.sh first-boot.service
-
 # Serviço de post-install (Flathub e Flatpaks iniciais)
 COPY scripts/post-install.sh systemd/post-install.service ./
 RUN mv -v post-install.sh /usr/bin/post-install.sh && \
