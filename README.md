@@ -66,10 +66,8 @@ sudo reboot
 
 ## Agradecimentos
 
-- [Fedora bootc](https://docs.fedoraproject.org/en-US/bootc/) pelo sistema base.
-- [Ferlinuxdebian/bootc-gnome-minimal](https://github.com/Ferlinuxdebian/bootc-gnome-minimal) pelo projeto base do qual este se baseia.
-- [gzSoares/dank](https://github.com/gzSoares/dank) de onde tirei algumas inspirações.
-- [joshyorko/omarchy-bootc](https://github.com/joshyorko/omarchy-bootc) por alguns componentes.
+- [Fedora](https://docs.fedoraproject.org/en-US/bootc/) pelo sistema base.
+- [Ferlinuxdebian/bootc-gnome-minimal](https://github.com/Ferlinuxdebian/bootc-gnome-minimal) pelo projeto que serviu de inspiração e ponto de partida.
 
 ***
 
