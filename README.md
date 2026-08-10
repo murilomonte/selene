@@ -22,7 +22,6 @@ selene/
 │   ├── first-boot.sh                    # Configuração executada no primeiro boot
 │   └── post-install.sh                  # Adiciona Flathub e instala Flatpaks
 └── systemd/
-    ├── first-boot.service               # Serviço que executa first-boot.sh
     └── post-install.service             # Serviço que executa post-install.sh
 ```
 
