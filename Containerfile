@@ -22,7 +22,7 @@ RUN dnf5 remove firefox -y && \
     /var/log/* \
     /var/tmp/*
 
-# Ativa os repositórios RPM Fusion (necessário para o Steam)
+# Ativa os repositórios RPM Fusion
 RUN dnf5 install -y \
     https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
